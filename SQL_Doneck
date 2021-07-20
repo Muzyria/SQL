@@ -1,0 +1,50 @@
+SELECT gmp.daily_reports.serNUM, gmp.pp_reports.ppSerNum_Cor as pp
+from gmp.daily_reports
+left join gmp.pp_reports
+on gmp.daily_reports.serNUM = gmp.pp_reports.ppSerNum_Cor;
+
+
+
+SELECT dr.* , pp.ppSerNum_Cor as ppp, pp.ppManu
+from gmp.daily_reports as dr
+left join gmp.pp_reports as pp
+on dr.serNUM = pp.ppSerNum_Cor
+where dr.typeDEV != 23 and dr.typeDEV != 24
+;
+
+
+
+
+SELECT dr.* , pp.ppSerNum_Cor as ppp, pp.ppManu, pp.ppBran, pp.ppInfX, pp.ppNamC
+from gmp.daily_reports as dr
+left join gmp.pp_reports as pp
+on dr.serNUM = pp.ppSerNum_Cor
+where dr.typeDEV != 23 and dr.typeDEV != 24
+group by dr.serNUM
+;
+
+
+SELECT dr.* , pp.ppSerNum_Cor as ppp, pp.ppManu, pp.ppBran, pp.ppInfX, pp.ppNamC, pp.ppSerN_iMod
+from gmp.daily_reports as dr
+left join gmp.pp_reports as pp
+on dr.serNUM = pp.ppSerNum_Cor
+where dr.typeDEV != 23 and dr.typeDEV != 24
+group by dr.serNUM
+;
+
+
+
+
+
+1112  adb shell screenrecord /storage/emulated/0/DCIM/screen_17.mp4
+ 1113  adb pull /storage/emulated/0/DCIM/screen_17.mp4 /home/muzyria/Загрузки/screen_17.mp4
+
+
+
+SELECT dr.* , pp.ppSerNum_Cor as ppp, pp.ppManu, pp.ppBran, pp.ppInfX, pp.ppNamC, pp.ppSerN_iMod, sum(dr.dVwrk)
+from gmp.daily_reports as dr
+left join gmp.pp_reports as pp
+on dr.serNUM = pp.ppSerNum_Cor
+where dr.typeDEV != 23 and dr.typeDEV != 24
+group by dr.serNUM
+; не правильная сумма
