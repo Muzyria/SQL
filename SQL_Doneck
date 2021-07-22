@@ -1,8 +1,14 @@
 
 
 
+SELECT serNUM ,sum(dVwrk ),typeDEV 
+FROM gmp.daily_reports
+WHERE typeDEV != 23 and typeDEV != 24
+GROUP by serNUM
 
-SELECT dr.id, dr.serNUM, dr.typeDEV, left(dr.dt,10), pp.ppSerNum_Cor as pppSerNum, pp.ppManu, pp.ppBran, pp.ppInfX, pp.ppNamC, pp.ppSerN_iMod
+
+
+SELECT  dr.serNUM,  left(dr.dt,10),pp.ppManufac,pp.ppDevType, pp.ppSerNum_Cor as pppSerNum,pp.ddTelNum ,pp.ppManu, pp.ppBran,  pp.ppNamC, pp.ppSerN_iMod
 from gmp.daily_reports as dr
 left join gmp.pp_reports as pp
 on dr.serNUM = pp.ppSerNum_Cor
@@ -11,7 +17,63 @@ group by dr.serNUM
 
 
 
-SELECT serNUM ,sum(dVwrk ),typeDEV 
-FROM gmp.daily_reports
-WHERE typeDEV != 23 and typeDEV != 24
-GROUP by serNUM
+SELECT ppSerNum_Cor , ppSerN_iMod , ppManufac , ppDevType 
+FROM gmp.pp_reports 
+where ppDevType != 23 and ppDevType != 24 
+group by ppSerNum_Cor;
+
+
+SELECT ppSerNum_Cor , ppSerN_iMod , ppManufac , ppDevType , 
+CASE
+    WHEN ppManufac = 1 and ppDevType = 3 THEN 'КПЛГ-1.02РВ'
+    WHEN ppManufac = 1 and ppDevType = 4 THEN 'КПЛГ-2.01Р'
+    WHEN ppManufac = 1 and ppDevType = 5 THEN 'ВЕГА-1.01'
+    WHEN ppManufac = 1 and ppDevType = 6 THEN 'ВЕГА-1.01ВЧ'
+    WHEN ppManufac = 1 and ppDevType = 8 THEN 'ВЕГА-2.01'
+    WHEN ppManufac = 1 and ppDevType = 11 THEN 'КВР-1.01'
+    WHEN ppManufac = 1 and ppDevType = 12 THEN 'КВР-1.02'
+    WHEN ppManufac = 1 and ppDevType = 15 THEN 'ВЕГА-1.01Н'
+    WHEN ppManufac = 1 and ppDevType = 16 THEN 'ВЕГА-2.01Н'
+    WHEN ppManufac = 1 and ppDevType = 17 THEN 'КВР-1.01Н'
+    WHEN ppManufac = 1 and ppDevType = 19 THEN 'КВТ-1.01Н'
+    WHEN ppManufac = 1 and ppDevType = 22 THEN 'КВУ-1.02Н'
+    WHEN ppManufac = 1 and ppDevType = 25 THEN 'ВЕГА-1.01НВЧ'
+    WHEN ppManufac = 2 and ppDevType = 1 THEN 'OE-VPT'
+    WHEN ppManufac = 2 and ppDevType = 2 THEN 'OE-VT'
+    WHEN ppManufac = 2 and ppDevType = 3 THEN 'OE-22ЛА'
+    WHEN ppManufac = 9 and ppDevType = 1 THEN 'B25 T'
+    WHEN ppManufac = 51 and ppDevType = 1 THEN 'Вычислитель ВН'
+END as Corrector_type
+FROM gmp.pp_reports 
+where ppDevType != 23 and ppDevType != 24 
+group by ppSerNum_Cor;
+
+
+
+SELECT  dr.serNUM,  left(dr.dt,10),pp.ppManufac,pp.ppDevType, pp.ppSerNum_Cor as Corrector_Number,
+CASE
+    WHEN ppManufac = 1 and ppDevType = 3 THEN 'КПЛГ-1.02РВ'
+    WHEN ppManufac = 1 and ppDevType = 4 THEN 'КПЛГ-2.01Р'
+    WHEN ppManufac = 1 and ppDevType = 5 THEN 'ВЕГА-1.01'
+    WHEN ppManufac = 1 and ppDevType = 6 THEN 'ВЕГА-1.01ВЧ'
+    WHEN ppManufac = 1 and ppDevType = 8 THEN 'ВЕГА-2.01'
+    WHEN ppManufac = 1 and ppDevType = 11 THEN 'КВР-1.01'
+    WHEN ppManufac = 1 and ppDevType = 12 THEN 'КВР-1.02'
+    WHEN ppManufac = 1 and ppDevType = 15 THEN 'ВЕГА-1.01Н'
+    WHEN ppManufac = 1 and ppDevType = 16 THEN 'ВЕГА-2.01Н'
+    WHEN ppManufac = 1 and ppDevType = 17 THEN 'КВР-1.01Н'
+    WHEN ppManufac = 1 and ppDevType = 19 THEN 'КВТ-1.01Н'
+    WHEN ppManufac = 1 and ppDevType = 22 THEN 'КВУ-1.02Н'
+    WHEN ppManufac = 1 and ppDevType = 25 THEN 'ВЕГА-1.01НВЧ'
+    WHEN ppManufac = 2 and ppDevType = 1 THEN 'OE-VPT'
+    WHEN ppManufac = 2 and ppDevType = 2 THEN 'OE-VT'
+    WHEN ppManufac = 2 and ppDevType = 3 THEN 'OE-22ЛА'
+    WHEN ppManufac = 9 and ppDevType = 1 THEN 'B25 T'
+    WHEN ppManufac = 51 and ppDevType = 1 THEN 'Вычислитель ВН'
+END as Corrector_type,
+pp.ddTelNum ,pp.ppManu, pp.ppBran,  pp.ppNamC, pp.ppSerN_iMod
+from gmp.daily_reports as dr
+left join gmp.pp_reports as pp
+on dr.serNUM = pp.ppSerNum_Cor
+WHERE dr.typeDEV != 23 and dr.typeDEV != 24 
+group by dr.serNUM
