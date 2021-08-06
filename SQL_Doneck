@@ -77,3 +77,10 @@ left join gmp.pp_reports as pp
 on dr.serNUM = pp.ppSerNum_Cor
 WHERE dr.typeDEV != 23 and dr.typeDEV != 24 
 group by dr.serNUM
+
+
+
+SELECT serNUM, mfDev, typeDEV, left(dt,10) 
+FROM gmp.daily_reports 
+WHERE typeDEV != 23 and typeDEV != 24
+group by serNUM desc  ;
